@@ -12,34 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
+# import time
 
-import numpy as np
+# import numpy as np
 
-import streamlit as st
-from streamlit.hello.utils import show_code
+# import streamlit as st
+# from streamlit.hello.utils import show_code
 
 
-def plotting_demo():
-    progress_bar = st.sidebar.progress(0)
-    status_text = st.sidebar.empty()
-    last_rows = np.random.randn(1, 1)
-    chart = st.line_chart(last_rows)
+# def plotting_demo():
+#     progress_bar = st.sidebar.progress(0)
+#     status_text = st.sidebar.empty()
+#     last_rows = np.random.randn(1, 1)
+#     chart = st.line_chart(last_rows)
 
-    for i in range(1, 101):
-        new_rows = last_rows[-1, :] + np.random.randn(5, 1).cumsum(axis=0)
-        status_text.text("%i%% Complete" % i)
-        chart.add_rows(new_rows)
-        progress_bar.progress(i)
-        last_rows = new_rows
-        time.sleep(0.05)
+#     for i in range(1, 101):
+#         new_rows = last_rows[-1, :] + np.random.randn(5, 1).cumsum(axis=0)
+#         status_text.text("%i%% Complete" % i)
+#         chart.add_rows(new_rows)
+#         progress_bar.progress(i)
+#         last_rows = new_rows
+#         time.sleep(0.05)
 
-    progress_bar.empty()
+#     progress_bar.empty()
 
-    # Streamlit widgets automatically run the script from top to bottom. Since
-    # this button is not connected to any other logic, it just causes a plain
-    # rerun.
-    st.button("Re-run")
+#     # Streamlit widgets automatically run the script from top to bottom. Since
+#     # this button is not connected to any other logic, it just causes a plain
+#     # rerun.
+#     st.button("Re-run")
 
 
 # st.set_page_config(page_title="Plotting Demo", page_icon="📈")
