@@ -26,7 +26,7 @@ def run():
 
     st.write("# Welcome to Streamlit! 👋")
 
-    st.sidebar(["HOME", "DEMO"])
+    st.sidebar.selectbox("select", ("Home", "Demo"))
 
     st.sidebar.success("Select a demo above.")
 
