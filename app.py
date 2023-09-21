@@ -13,16 +13,14 @@
 # limitations under the License.
 
 import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
 # from streamlit.logger import get_logger
 
 # LOGGER = get_logger(__name__)
 
 
 def run():
-    import streamlit as st
-    import numpy as np
-    import matplotlib.pyplot as plt
-
     # アプリのタイトル
     st.title("積立投資シミュレーションアプリ")
 
