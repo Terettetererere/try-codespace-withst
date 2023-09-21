@@ -28,6 +28,8 @@ def run():
 
     st.sidebar.success("Select a demo above.")
 
+    st.write("try")
+
     st.markdown(
         """
         Streamlit is an open-source app framework built specifically for
