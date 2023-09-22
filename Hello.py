@@ -55,34 +55,27 @@ def run():
     #st.write(dt)
 
     # プロット
-    fig, ax = plt.subplots()
-    ax.bar(time_period, investment_values, label="Increase", color="blue")
-    ax.bar(time_period, np.array(total_contributions), label="Investment", color="green")
-    ax.set_xlabel("year")
-    ax.set_ylabel("money")
-    ax.set_title("Simulation")
-    ax.legend()
-    # グラフを表示
-    st.pyplot(fig)
+    if years <= 4:
+        fig = px.bar(dt, x=time_period, y=['Increase', 'Investment'],
+                    #hover_name=['Increase', 'Investment'],
+                    title="積立投資シミュレーション",
+                    color_discrete_sequence=["blue", "green"],
+                    barmode="overlay",
+                    opacity=1
+                    )
 
-    # プロット
-    fig = px.bar(x=time_period, y=[investment_values, total_contributions],
-                labels={"y": "money", "x": "year"},
-                title="Simulation")
-    fig.update_traces(marker_color=["blue", "green"])
-    fig.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
-    fig.update_xaxes(title_text="year")
-    fig.update_yaxes(title_text="money")
-    st.plotly_chart(fig)
-
-    # プロット
-    fig = px.bar(dt, x=time_period, y=['Increase', 'Investment'],
-                #hover_name=['Increase', 'Investment'],
-                title="積立投資シミュレーション",
-                color_discrete_sequence=["blue", "green"],
-                barmode="overlay",
-                opacity=1
-                )
+    else:
+        fig = px.bar(dt[::12], x=time_period[::12]/12, y=['Increase', 'Investment'],
+                    #hover_name=['Increase', 'Investment'],
+                    title="積立投資シミュレーション",
+                    color_discrete_sequence=["blue", "green"],
+                    barmode="overlay",
+                    opacity=1
+                    )
+    fig.update_traces(width=0.75,
+                  hovertemplate='%{y:d}',
+                  texttemplate='%{y:d}',
+                  textposition='outside')
     fig.update_xaxes(title_text="期間")
     fig.update_yaxes(title_text="金額")
     st.plotly_chart(fig)
