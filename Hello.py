@@ -29,7 +29,7 @@ def run():
     years = st.sidebar.slider("想定年数", 1, 30, 10)
     interest_rate = st.sidebar.slider("利回り（年率）", 0.1, 30.0, 2.0, step=0.1)
     monthly_investment = st.sidebar.slider("積立額", 1000, 100000, 20000, step=1000)
-    initial_investment = st.sidebar.slider("初期投資額", 1000, 100000, 10000, step=10000)
+    initial_investment = st.sidebar.slider("初期投資額", 0, 100000, 10000, step=10000)
 
     # 積み立てシミュレーション
     time_period = np.arange(years + 1)
