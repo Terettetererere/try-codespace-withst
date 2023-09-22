@@ -15,6 +15,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.express as px
 # from streamlit.logger import get_logger
 
 # LOGGER = get_logger(__name__)
@@ -27,36 +28,58 @@ def run():
     # スライダーを追加
     st.sidebar.header("パラメータ設定")
     years = st.sidebar.slider("想定年数", 1, 30, 10)
-    interest_rate = st.sidebar.slider("利回り（年率）", 0.1, 30.0, 2.0, step=0.1)
+    annual_interest_rate = st.sidebar.slider("利回り（年率）", 0.1, 30.0, 5.0, step=0.1)
     monthly_investment = st.sidebar.slider("積立額", 1000, 100000, 20000, step=1000)
     initial_investment = st.sidebar.slider("初期投資額", 0, 100000, 10000, step=10000)
 
-    # 積み立てシミュレーション
-    time_period = np.arange(years + 1)
-    investment_values = []
-    contributions = []
+    # 複利計算用の月利率
+    monthly_interest_rate = (annual_interest_rate / 100) / 12
 
-    for year in time_period:
-        if year == 0:
-            contribution = initial_investment
+    time_period = np.arange(years * 12 + 1)
+    investment_values = []
+    total_contributions = []
+
+    for month in time_period:
+        if month == 0:
+            investment = initial_investment  # 初月の積立元本は初期投資額
         else:
-            contribution = monthly_investment * 12
-        contributions.append(contribution)
-        investment = initial_investment + sum(contributions)
-        investment += sum(contributions) * (interest_rate / 100)
+            investment = investment_values[-1] * (1 + monthly_interest_rate) + monthly_investment
         investment_values.append(investment)
+        total_contribution = initial_investment + sum(monthly_investment for _ in range(month))
+        total_contributions.append(total_contribution)
+
 
     # プロット
     fig, ax = plt.subplots()
-    ax.bar(time_period, investment_values, label="Final reserve", color="blue")
-    ax.bar(time_period, np.array(investment_values) - initial_investment, label="Increase amount", color="green")
+    ax.bar(time_period, investment_values, label="Increase", color="blue")
+    ax.bar(time_period, np.array(total_contributions), label="Investment", color="green")
     ax.set_xlabel("year")
     ax.set_ylabel("money")
-    ax.set_title("simulation")
+    ax.set_title("Simulation")
     ax.legend()
     # グラフを表示
     st.pyplot(fig)
 
+    # プロット
+    fig = px.bar(x=time_period, y=[investment_values, total_contributions],
+                labels={"y": "money", "x": "year"},
+                title="Simulation")
+    fig.update_traces(marker_color=["blue", "green"])
+    fig.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
+    fig.update_xaxes(title_text="year")
+    fig.update_yaxes(title_text="money")
+    st.plotly_chart(fig)
+
+    # プロット
+    fig = px.bar(x=time_period, y=[investment_values, total_contributions],
+                title="積立投資シミュレーション",
+                color_discrete_sequence=["blue", "green"],
+                barmode="overlay",
+                opacity=[1,1],
+                )
+    fig.update_xaxes(title_text="期間", type='category')
+    fig.update_yaxes(title_text="金額")
+    st.plotly_chart(fig)
 
 
 if __name__ == "__main__":
