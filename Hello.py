@@ -48,11 +48,11 @@ def run():
 
     # プロット
     fig, ax = plt.subplots()
-    ax.bar(time_period, investment_values, label="最終積立金額", color="blue")
-    ax.bar(time_period, np.array(investment_values) - initial_investment, label="増加額", color="green")
-    ax.set_xlabel("年数")
-    ax.set_ylabel("金額")
-    ax.set_title("積立投資シミュレーション")
+    ax.bar(time_period, investment_values, label="Final reserve", color="blue")
+    ax.bar(time_period, np.array(investment_values) - initial_investment, label="Increase amount", color="green")
+    ax.set_xlabel("year")
+    ax.set_ylabel("money")
+    ax.set_title("simulation")
     ax.legend()
     # グラフを表示
     st.pyplot(fig)
