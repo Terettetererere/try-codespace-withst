@@ -41,7 +41,7 @@ def run():
 
     for month in time_period:
         if month == 0:
-            investment = initial_investment  # 初月の積立元本は初期投資額
+            investment = initial_investment + monthly_investment # 初月の積立元本は初期投資額
         else:
             investment = investment_values[-1] * (1 + monthly_interest_rate) + monthly_investment
         investment_values.append(investment)
@@ -72,12 +72,13 @@ def run():
 
     # プロット
     fig = px.bar(x=time_period, y=[investment_values, total_contributions],
+                labels={"y": "金額", "x": "年数", "y0": "積立元本", "y1": "増加 額"},
                 title="積立投資シミュレーション",
                 color_discrete_sequence=["blue", "green"],
                 barmode="overlay",
-                opacity=[1,1],
+                opacity=1
                 )
-    fig.update_xaxes(title_text="期間", type='category')
+    fig.update_xaxes(title_text="期間")
     fig.update_yaxes(title_text="金額")
     st.plotly_chart(fig)
 
