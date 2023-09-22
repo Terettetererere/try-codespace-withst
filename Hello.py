@@ -14,6 +14,7 @@
 
 import streamlit as st
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 # from streamlit.logger import get_logger
@@ -48,6 +49,10 @@ def run():
         total_contribution = initial_investment + sum(monthly_investment for _ in range(month))
         total_contributions.append(total_contribution)
 
+    dt = pd.DataFrame(columns=['Increase', 'Investment'])
+    dt['Increase'] = investment_values
+    dt['Investment'] = total_contributions
+    #st.write(dt)
 
     # プロット
     fig, ax = plt.subplots()
@@ -71,8 +76,8 @@ def run():
     st.plotly_chart(fig)
 
     # プロット
-    fig = px.bar(x=time_period, y=[investment_values, total_contributions],
-                labels={"y": "金額", "x": "年数", "y0": "積立元本", "y1": "増加 額"},
+    fig = px.bar(dt, x=time_period, y=['Increase', 'Investment'],
+                #hover_name=['Increase', 'Investment'],
                 title="積立投資シミュレーション",
                 color_discrete_sequence=["blue", "green"],
                 barmode="overlay",
